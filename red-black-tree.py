@@ -1,5 +1,11 @@
+from enum import Enum
+
+class Color(Enum):
+    BLACK = "Black Node"
+    RED = "Red Node"
+
 class RBNode(object):
-    def __init__(self, key, color='b', value=None, left=None, right=None, parent=None):
+    def __init__(self, key, color=Color.BLACK, value=None, left=None, right=None, parent=None):
         self.key=key
         self.color=color
         self.value=value
@@ -7,19 +13,51 @@ class RBNode(object):
         self.right=right
         self.parent=parent
 
-class RBTree(object):
+class RBTree(object): #este object sera um node
     def __init__(self, root=None):
         self.root=root
 
-    def insert(self, node):
+    def leftRotate(self, node):
+        y=node.right #define Y
+        node.right=y.left #transformo a subarvore a esquerda de x na direita de Y
+        if y.left == None:
+            y.left.parent=node
+        y.parent=node.parent #define o parent da raiz e nulo, pois x e raiz e raiz nao tem pai
+        if node.parent == None:
+            self.root=y
+        elif node == self.fatherNode.left:
+            node.parent.left=y
+        else:
+            node.parent.right=y
+        y.left=node
+        node.parent=y
+
+    def rightRotate(self, node):
+        y=node.left #define Y
+        node.right=y.left #transformar a subarvore da direita de Y na esquerda de X
+        if y.left == None:
+            y.left=node
+        y.parent=node.parent #define o parent da raiz e nulo, pois x e raiz e raiz nao tem pai
+        if node.parent == None:
+            self.root=y
+        elif node == self.fatherNode.right:
+            node.parent.right=y
+        else:
+            node.parent.left=y
+        y.right=node
+        node.parent=y
+
+    def insertNode(self,node):
         y=None
-        x=self.root
-        while x is not None:
-            y=x
-            if node.key < x.key:
-                x=x.left
+        nodeRoot=self.root
+        while nodeRoot is not None: #para quando a raiz for conhecida
+            y=nodeRoot
+            if node.key < nodeRoot.key:
+                nodeRoot=nodeRoot.left
+            elif node.key > nodeRoot.key:
+                nodeRoot=nodeRoot.right
             else:
-                x=x.right
+                 return None
         node.parent=y
         if y == None:
             self.root=node
@@ -29,44 +67,90 @@ class RBTree(object):
             y.right=node
         node.left=None
         node.right=None
-        node.color='r'
-        insertFixup(self, node)
+        node.color= Color.RED;
+        #self.insertFixupNode(node)
 
-    def insertFixup(self, node):
-        while node.parent.color=='r':
-            if node.parent == node.parent.parent.left
-                y=node.parent.parent.right
-                if y.color='r':
-                    node.parent.color='b'
-                    y.color='b'
-                    node.parent.parent.color='r'
-                    node=node.parent.parent
-                else if node=node.parent.right:
-                        node=node.parent
-                        leftRotate(self, node)
-                    node.parent.color='b'
-                    node.parent.parent.colot='r'
-                    rightRotate(self, node.parent.parent)
-                else:
-                    y=node.parent.parent.left
-                    if y.color='r':
-                        node.parent.color='b'
-                        y.color='b'
-                        node.parent.parent.color='r'
-                        node=node.parent.parent
-                    else if node=node.parent.left
-                            node=node.parent
-                            leftRotate(self, node)
-                        node.parent.color='b'
-                        node.parent.parent.colot='r'
-                        rightRotate(self, node.parent.parent)
-        self.root.color='b'
+    # def insertFixupNode(self, node):
+    #     fatherNode=node.parent #pai do no
+    #     while fatherNode.color==Color.RED: #enquanto o pai do no tiver a cor vermelha
+    #         print fatherNode
+    #         grandFatherNode=fatherNode.parent #avo do no
+    #         if fatherNode == grandFatherNode.left:
+    #             y=grandFatherNode.right
+    #             if y.color==Color.RED:
+    #                 fatherNode.color==Color.BLACK
+    #                 y.color==Color.BLACK
+    #                 grandFatherNode.color==Color.RED
+    #                 node=grandFatherNode
+    #             elif node==fatherNode.right:
+    #                 node=fatherNode
+    #                 leftRotate(self, node)
+    #             fatherNode.color==Color.BLACK
+    #             grandFatherNode.colot==Color.RED
+    #             rightRotate(self, grandFatherNode)
+    #         else:
+    #             y=grandFatherNode.left
+    #             if y.color==Color.RED:
+    #                 fatherNode.color==Color.BLACK
+    #                 y.color==Color.BLACK
+    #                 grandFatherNode.color==Color.RED
+    #                 node=grandFatherNode
+    #             elif node==fatherNode.left:
+    #                 node=fatherNode
+    #                 leftRotate(self, node)
+    #             fatherNode.color==Color.BLACK
+    #             grandFatherNode.color==Color.RED
+    #             rightRotate(self, grandFatherNode)
+    #     self.root.color==Color.BLACK
+
+    # def show(self, node):
+    #     print "No: "+str(node.key)
+    #     print "Cor: "+str(node.color.value)
+    #     print "Pai: "+str(node.parent)
+    #     print "Filho direito: "+str(node.right)
+    #     print "Filho esquerdo: "+str(node.left)+"\n"
 def main():
-        nodeRoot = RBNode(20)
-        node = RBNode(5)
-        tree = RBTree(nodeRoot)
+    #nos
+    rootNode=RBNode(20)
+    rightNode = RBNode(30)
+    rightNode2 = RBNode(25)
+    leftNode = RBNode(10)
 
-        tree.insert(nodeRoot)
-        tree.insert(node)
+    #arvores
+    tree = RBTree()
 
+    #inserir nos nas arvores
+    tree.insertNode(rootNode)
+    tree.insertNode(leftNode)
+    tree.insertNode(rightNode)
+    tree.insertNode(rightNode2)
+
+    #testando
+    # tree.show(rootNode)
+    # tree.show(leftNode)
+    # tree.show(rightNode)
+    # tree.show(rightNode2)
+    print "No: "+str(rootNode.key)
+    print "Cor: "+str(rootNode.color.value)
+    print "Pai: "+str(rootNode.parent)
+    print "Filho direito: "+str(rootNode.right.key)
+    print "Filho esquerdo: "+str(rootNode.left.key)+"\n"
+
+    print "No: "+str(leftNode.key)
+    print "Cor: "+str(leftNode.color.value)
+    print "Pai: "+str(leftNode.parent.key)
+    print "Filho direito: "+str(leftNode.right)
+    print "Filho esquerdo: "+str(leftNode.left)+"\n"
+
+    print "No: "+str(rightNode.key)
+    print "Cor: "+str(rightNode.color.value)
+    print "Pai: " +str(rightNode.parent.key)
+    print "Filho direito: "+str(rightNode.right)
+    print "Filho esquerdo: "+str(rightNode.left.key)+"\n"
+
+    print "No: "+str(rightNode2.key)
+    print "Cor: "+str(rightNode2.color.value)
+    print "Pai: " +str(rightNode2.parent.key)
+    print "Filho direito: "+str(rightNode2.right)
+    print "Filho esquerdo: "+str(rightNode2.left)+"\n"
 main()
