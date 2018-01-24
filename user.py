@@ -1,10 +1,8 @@
+from red_black_tree import *
+
 class User (object):
 
-    name = None
-    cpf = None
-    phone = None
-
-    def __init__(self, name, cpf, phone):
+    def __init__(self, name=None, cpf=None, phone=None):
         self.name = name
         self.cpf = cpf
         self.phone = phone

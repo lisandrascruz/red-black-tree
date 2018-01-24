@@ -1,16 +1,9 @@
+from red_black_tree import *
+
 class Book (object):
 
-    title = None
-    qtd = None
-    author = None
-    edition = None
-
-    def __init__(self, title, qtd, author, edition):
+    def __init__(self, title=None, qtd=None, author=None, edition=None):
         self.title = title
         self.qtd = qtd
         self.author = author
         self.edition = edition
-
-    #def insertBook():
-
-    #def deleteBook():

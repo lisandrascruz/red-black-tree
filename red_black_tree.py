@@ -134,6 +134,15 @@ class RBTree(object): #este object sera um node
             node=node.left
         return node
 
+    def getMax(self):
+        if self.root:
+            node=self.root
+            while node.right is not None:
+                node=node.right
+            return node.key
+        else:
+            return 0
+
     def deleteFixup(self, node):
         while node != self.root and node.color == Color.BLACK:
             if node == node.parent.left:
@@ -229,87 +238,87 @@ class RBTree(object): #este object sera um node
         node.right=None
 
     def show(self, node):
-        print "No: "+str(node.key)
-        print "Cor: "+str(node.color.value)
+        print ("No: ", str(node.key))
+        print ("Cor: ", str(node.color.value))
         if node.parent is not None:
-            print "Pai: "+str(node.parent.key)
+            print ("Pai: ", str(node.parent.key))
         if node.right is not None:
-            print "Filho direito: "+str(node.right.key)
+            print ("Filho direito: ", str(node.right.key))
         if node.left is not None:
-            print "Filho esquerdo: "+str(node.left.key)+"\n"
-        print "------------------"
-def main():
-    #nos
-    rootNode=RBNode(20)
-    rightNode = RBNode(30)
-    rightNode2 = RBNode(25)
-    leftNode = RBNode(10)
-    leftNode2 = RBNode(12)
-    rightNode35 = RBNode(35)
-    rightNode33 = RBNode(33)
-    rightNode36 = RBNode(36)
-    rightNode34 = RBNode(34)
-
-    #arvores
-    tree = RBTree()
-
-    #inserir nos nas arvores
-    tree.insertNode(rootNode)
-    tree.insertNode(leftNode)
-    tree.insertNode(rightNode)
-    tree.insertNode(rightNode2)
-    tree.insertNode(leftNode2)
-    tree.insertNode(rightNode35)
-    tree.insertNode(rightNode33)
-    tree.insertNode(rightNode36)
-    tree.insertNode(rightNode34)
-    tree.deleteNode(rightNode36)
-
-    tree.show(rightNode)
-    tree.show(rightNode2)
-    tree.show(leftNode)
-    tree.show(rootNode)
-    tree.show(leftNode2)
-    tree.show(rightNode33)
-    tree.show(rightNode35)
-    tree.show(rightNode36)
-    tree.show(rightNode34)
-
-    #testando buscar
-    print('')
-    print("TESTANDO BUSCAR CHAVE NA ARVORE")
-    found = tree.search(330)
-    if found:
-        print('Chave encontrada: ', found.key, '\n\n')
-    else:
-        print('Chave nao encontrada.')
-
-    #testando
-    # tree.show(rootNode)
-    # tree.show(leftNode)
-    # tree.show(rightNode)
-    # tree.show(rightNode2)
-    # print "No: "+str(rootNode.key)
-    # print "Cor: "+str(rootNode.color.value)
-    # print "Pai: "+str(rootNode.parent)
-    # print "Filho direito: "+str(rootNode.right.key)
-    # print "Filho esquerdo: "+str(rootNode.left.key)+"\n"
-    #
-    # print "No: "+str(leftNode.key)
-    # print "Cor: "+str(leftNode.color.value)
-    # print "Pai: "+str(leftNode.parent.key)
-    # print "Filho direito: "+str(leftNode.right)
-    # print "Filho esquerdo: "+str(leftNode.left)+"\n"
-    #
-    # print "No: "+str(rightNode.key)
-    # print "Cor: "+str(rightNode.color.value)
-    # print "Pai: " +str(rightNode.parent.key)
-    # print "Filho direito: "+str(rightNode.right)
-    # print "Filho esquerdo: "+str(rightNode.left.key)+"\n"
-    #
-    # print "No: "+str(rightNode2.key)
-    # print "Cor: "+str(rightNode2.color.value)
-    # print "Pai: " +str(rightNode2.parent.key)
-    # print "Filho direito: "+str(rightNode2.right)
-    # print "Filho esquerdo: "+str(rightNode2.left)+"\n"
-main()
+            print ("Filho esquerdo: ", str(node.left.key)+"\n")
+        print ("------------------")
+# def main():
+#     #nos
+#     rootNode=RBNode(20)
+#     rightNode = RBNode(30)
+#     rightNode2 = RBNode(25)
+#     leftNode = RBNode(10)
+#     leftNode2 = RBNode(12)
+#     rightNode35 = RBNode(35)
+#     rightNode33 = RBNode(33)
+#     rightNode36 = RBNode(36)
+#     rightNode34 = RBNode(34)
+#
+#     #arvores
+#     tree = RBTree()
+#
+#     #inserir nos nas arvores
+#     tree.insertNode(rootNode)
+#     tree.insertNode(leftNode)
+#     tree.insertNode(rightNode)
+#     tree.insertNode(rightNode2)
+#     tree.insertNode(leftNode2)
+#     tree.insertNode(rightNode35)
+#     tree.insertNode(rightNode33)
+#     tree.insertNode(rightNode36)
+#     tree.insertNode(rightNode34)
+#     tree.deleteNode(rightNode36)
+#
+#     tree.show(rightNode)
+#     tree.show(rightNode2)
+#     tree.show(leftNode)
+#     tree.show(rootNode)
+#     tree.show(leftNode2)
+#     tree.show(rightNode33)
+#     tree.show(rightNode35)
+#     tree.show(rightNode36)
+#     tree.show(rightNode34)
+#
+#     #testando buscar
+#     print('')
+#     print("TESTANDO BUSCAR CHAVE NA ARVORE")
+#     found = tree.search(330)
+#     if found:
+#         print('Chave encontrada: ', found.key, '\n\n')
+#     else:
+#         print('Chave nao encontrada.')
+#
+#     #testando
+#     # tree.show(rootNode)
+#     # tree.show(leftNode)
+#     # tree.show(rightNode)
+#     # tree.show(rightNode2)
+#     # print "No: "+str(rootNode.key)
+#     # print "Cor: "+str(rootNode.color.value)
+#     # print "Pai: "+str(rootNode.parent)
+#     # print "Filho direito: "+str(rootNode.right.key)
+#     # print "Filho esquerdo: "+str(rootNode.left.key)+"\n"
+#     #
+#     # print "No: "+str(leftNode.key)
+#     # print "Cor: "+str(leftNode.color.value)
+#     # print "Pai: "+str(leftNode.parent.key)
+#     # print "Filho direito: "+str(leftNode.right)
+#     # print "Filho esquerdo: "+str(leftNode.left)+"\n"
+#     #
+#     # print "No: "+str(rightNode.key)
+#     # print "Cor: "+str(rightNode.color.value)
+#     # print "Pai: " +str(rightNode.parent.key)
+#     # print "Filho direito: "+str(rightNode.right)
+#     # print "Filho esquerdo: "+str(rightNode.left.key)+"\n"
+#     #
+#     # print "No: "+str(rightNode2.key)
+#     # print "Cor: "+str(rightNode2.color.value)
+#     # print "Pai: " +str(rightNode2.parent.key)
+#     # print "Filho direito: "+str(rightNode2.right)
+#     # print "Filho esquerdo: "+str(rightNode2.left)+"\n"
+# main()
