@@ -129,7 +129,7 @@ class RBTree(object): #este object sera um node
             x = x.left
           else:
             x = x.right
-        print ("Chave encontrada: ", x.key)
+        #print ("Chave encontrada: ", x.key)
         return x
 
 def main():
@@ -160,11 +160,11 @@ def main():
     #testando buscar
     print('')
     print("TESTANDO BUSCAR CHAVE NA ÁRVORE")
-    tree.search(30)
-    tree.search(20)
-    tree.search(25)
-    tree.search(10)
-    tree.search(12)
+    found = tree.search(50)
+    if found:
+        print('Chave encontrada: ', found.key, '\n\n')
+    else:
+        print('Chave não encontrada.')
 
 
     #testando
