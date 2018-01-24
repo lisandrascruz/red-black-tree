@@ -13,7 +13,3 @@ class Library (object):
         self.book = book
         self.loanDate = loanDate
         self.deliveryDate = deliveryDate
-
-    #def insertBook():
-
-    #def deleteBook():

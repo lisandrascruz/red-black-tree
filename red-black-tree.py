@@ -110,15 +110,28 @@ class RBTree(object): #este object sera um node
         self.root.color=Color.BLACK
 
     def show(self, node):
-        print "No: "+str(node.key)
-        print "Cor: "+str(node.color.value)
+        print ("No: ", str(node.key))
+        print ("Cor: ", str(node.color.value))
         if node.parent is not None:
-            print "Pai: "+str(node.parent.key)
+            print ("Pai: "+str(node.parent.key))
         if node.right is not None:
-            print "Filho direito: "+str(node.right.key)
+            print ("Filho direito: "+str(node.right.key))
         if node.left is not None:
-            print "Filho esquerdo: "+str(node.left.key)+"\n"
-        print "------------------"
+            print ("Filho esquerdo: "+str(node.left.key)+"\n")
+        print ("------------------")
+
+
+    def search(self, key, x = None):
+        if x is None:
+            x = self.root
+        while x and x.key != key:
+          if key < x.key:
+            x = x.left
+          else:
+            x = x.right
+        print ("Chave encontrada: ", x.key)
+        return x
+
 def main():
     #nos
     rootNode=RBNode(20)
@@ -142,6 +155,17 @@ def main():
     tree.show(leftNode)
     tree.show(rootNode)
     tree.show(leftNode2)
+
+
+    #testando buscar
+    print('')
+    print("TESTANDO BUSCAR CHAVE NA ÁRVORE")
+    tree.search(30)
+    tree.search(20)
+    tree.search(25)
+    tree.search(10)
+    tree.search(12)
+
 
     #testando
     # tree.show(rootNode)
