@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from enum import Enum
 
 class Color(Enum):
@@ -17,22 +16,22 @@ class RBNode(object):
 class RBTree(object): #este object sera um node
     def __init__(self, root=None):
         self.root=root
-    #rotaciona a esquerda
+
     def leftRotate(self, node):
-        y=node.right #define Y (quem vai rotacionar com X)
-        node.right=y.left #caso o filho esquerdo de Y nao seja nulo Y e o node
-        if y.left is not None:#caso o filho esquerdo de Y nao seja nulo Y e o node
+        y=node.right #define Y
+        node.right=y.left #transformo a subarvore a esquerda de x na direita de Y
+        if y.left is not None:
             y.left.parent=node
-        y.parent=node.parent#liga o pai de x a y
+        y.parent=node.parent #define o parent da raiz e nulo, pois x e raiz e raiz nao tem pai
         if node.parent == None:
             self.root=y
-        elif node == node.parent.left:#coso o no seja filho direito do seu pai
+        elif node == node.parent.left:
             node.parent.left=y
         else:
             node.parent.right=y
-        y.left=node#a esquerda de Y recebe o no
+        y.left=node
         node.parent=y
-    #rotaciona a direita
+
     def rightRotate(self, node):
         y=node.left #define Y
         node.left=y.right #transformar a subarvore da direita de Y na esquerda de X
@@ -47,23 +46,19 @@ class RBTree(object): #este object sera um node
             node.parent.left=y
         y.right=node
         node.parent=y
-    #insere o no
+
     def insertNode(self,node):
         y=None
         nodeRoot=self.root
         while nodeRoot is not None: #para quando a raiz for conhecida
             y=nodeRoot
-            #verifica a posicao em que o no sera inserido
             if node.key < nodeRoot.key:
                 nodeRoot=nodeRoot.left
             elif node.key > nodeRoot.key:
                 nodeRoot=nodeRoot.right
             else:
                  return None
-        #define para node quem e o seu pai
         node.parent=y
-
-        #define para Y quem e seu filho
         if y == None:
             self.root=node
         elif node.key < y.key:
@@ -73,51 +68,47 @@ class RBTree(object): #este object sera um node
         node.left=None
         node.right=None
         node.color= Color.RED;
+        # print "the insert: "
+        # self.show(node)
         self.insertFixupNode(node)
-    #redefine as cores e balanceia a arvore
+
     def insertFixupNode(self, node):
         while node.parent is not None and node.parent.color==Color.RED: #enquanto o pai do no tiver a cor vermelha
             grandFatherNode=node.parent.parent #avo do no
-            #verifica se o no e filho esquerdo
             if node.parent == grandFatherNode.left:
                 y=grandFatherNode.right
-                #caso 1: o node e seu pai sao vermelho, violando propriedades
-                #se o tio tambem seja vermelho basta recolorir os nos e o no passa a ser o no dois niveis de cima na arvore
-                if y is not None and y.color==Color.RED:
+                if y.color==Color.RED:
                     node.parent.color=Color.BLACK
                     y.color=Color.BLACK
                     grandFatherNode.color=Color.RED
                     node=grandFatherNode
-                #caso 2: pai e filho tem nos vermelhos e tio e vermelho
-                #se o no for filho direito do seu pai e feita uma rotacao a esquerda
                 elif node==node.parent.right:
                     node=node.parent
                     # print 'left rotate'
                     # self.show(node)
                     self.leftRotate(node)
-                #caso 3: pai e filho tem nos vermelhos e tio e preto
-                #se o no for filho a esquerda do seu pai a arvore e colorida novamente e uma rotacao a direita e aplicada
                 else:
                     node.parent.color=Color.BLACK
                     grandFatherNode.color=Color.RED
                     self.rightRotate(grandFatherNode)
-            #caso o no seja filho direito
             else:
                 y=grandFatherNode.left
-                if y is not None and y.color==Color.RED:
+                if y.color==Color.RED:
                     node.parent.color=Color.BLACK
                     y.color=Color.BLACK
                     grandFatherNode.color=Color.RED
                     node=grandFatherNode
                 elif node==node.parent.left:
                     node=node.parent
+                    # print 'right rotate'
+                    # self.show(node)
                     self.rightRotate(node)
                 else:
                     node.parent.color=Color.BLACK
                     grandFatherNode.color=Color.RED
                     self.leftRotate(grandFatherNode)
         self.root.color=Color.BLACK
-    #procura um no na arvore
+
     def search(self, key, x = None):
         if x is None:
             x = self.root
@@ -126,22 +117,23 @@ class RBTree(object): #este object sera um node
                 x = x.left
             else:
                 x = x.right
+            #print ("Chave encontrada: ", x.key)
         return x
-    #movimenta a arvore substituindo uma subarvore como um filho de seu pai por outra subarvore
+
     def transplant(self, u, v):
         if u.parent == None:
             self.root=v
-        elif u == u.parent.left:
+        elif u == u.parent.left: #u se encontra a esquerda do pai
             u.parent.left = v
         else:
             u.parent.right = v
         v.parent = u.parent
-    #pegar o objeto de menor key na arvore
+
     def treeMinimun(self, node):
         while node.left is not None:
             node=node.left
         return node
-    #pegar o objeto de maior key na arvore
+
     def getMax(self):
         if self.root:
             node=self.root
@@ -150,27 +142,22 @@ class RBTree(object): #este object sera um node
             return node.key
         else:
             return 0
-    #redefine as cores e balanceia a arvore
+
     def deleteFixup(self, node):
         while node != self.root and node.color == Color.BLACK:
-            #verifica se o no e filho esquerdo
             if node == node.parent.left:
                 w = node.parent.right
-                #caso1: se o irmao do no for vermelho
                 if w.color==Color.RED:
                     w.color = Color.BLACK
                     node.parent.color = Color.RED
                     self.leftRotate(node.parent)
                     w = node.parent.right
-                #caso2: se o irmao for preto e os filhos do irmao forem pretos
                 if (w.left!=None and w.right!=None)and (w.left.color==Color.BLACK and w.right.color==Color.BLACK):
                     w.color = Color.RED
                     node = node.parent
-                #caso3:se o irmao nao tem filhos
                 elif(w.left==None and w.right==None):
                     w.color = Color.RED
                     node = node.parent
-                #case4: se o filho direito do irmao e preto e diferente de vazio
                 elif ((w.right!=None) and (w.right.color == Color.BLACK)) or (w.right==None):
                     if(w.left!=None):
                         w.left.color = Color.BLACK
@@ -182,7 +169,6 @@ class RBTree(object): #este object sera um node
                         w.left.color=Color.BLACK
                     self.leftRotate(node.parent)
                     node = self.root
-            #caso o no seja filho direito
             else:
                 w = node.parent.left
                 if w.color==Color.RED:
@@ -208,14 +194,12 @@ class RBTree(object): #este object sera um node
                         w.right.color=Color.BLACK
                     self.rightRotate(node.parent)
                     node = self.root
-    #deleta um objeto da arvore
+
     def deleteNode(self, node):
         y = node
         yOriginColor= y.color
         x=None
-
-        #caso1: o no nao tem filhos
-        #apenas removemos o no
+        # caso o no nao tenha filhos entao e cortado o "cordao umbilical" com o pai
         if node.left == None and node.right==None:
             if node.parent is not None:
                 if node == node.parent.left:
@@ -225,17 +209,12 @@ class RBTree(object): #este object sera um node
             else:
                 self.root=None
 
-        #caso2: tem um filho
-        #apenas extraimos o no e mantemos a ligacao do neto com o avo
         elif node.left == None and node.right != None:
             x = node.right
             self.transplant(node, node.right)
         elif node.right == None and node.left != None:
             x = node.left
             self.transplant(node, node.left)
-
-        #caso3: tem dois filhos
-        #extraimos o sucessor q tem no maximo um filho e colocamos no lugar do node
         else:
             y = self.treeMinimun(node.right)
             yOriginColor = y.color
@@ -257,7 +236,7 @@ class RBTree(object): #este object sera um node
         node.parent=None
         node.left=None
         node.right=None
-    #metodo para printar testes
+
     def show(self, node):
         print ("No: ", str(node.key))
         print ("Cor: ", str(node.color.value))
@@ -268,79 +247,78 @@ class RBTree(object): #este object sera um node
         if node.left is not None:
             print ("Filho esquerdo: ", str(node.left.key)+"\n")
         print ("------------------")
-
-def main():
-    #nos
-    rootNode=RBNode(1)
-    rightNode = RBNode(2)
-    rightNode2 = RBNode(3)
-    leftNode = RBNode(4)
-    leftNode2 = RBNode(5)
-    rightNode35 = RBNode(6)
-    rightNode33 = RBNode(7)
-    rightNode36 = RBNode(8)
-    rightNode34 = RBNode(9)
-
-    #arvores
-    tree = RBTree()
-
-    #inserir nos nas arvores
-    tree.insertNode(rootNode)
-    tree.insertNode(leftNode)
-    tree.insertNode(rightNode)
-    tree.insertNode(rightNode2)
-    tree.insertNode(leftNode2)
-    tree.insertNode(rightNode35)
-    tree.insertNode(rightNode33)
-    tree.insertNode(rightNode36)
-    tree.insertNode(rightNode34)
-    tree.deleteNode(rightNode36)
-
-    tree.show(rightNode)
-    tree.show(rightNode2)
-    tree.show(leftNode)
-    tree.show(rootNode)
-    tree.show(leftNode2)
-    tree.show(rightNode33)
-    tree.show(rightNode35)
-    tree.show(rightNode36)
-    tree.show(rightNode34)
-
-    #testando buscar
-    print('')
-    print("TESTANDO BUSCAR CHAVE NA ARVORE")
-    found = tree.search(30)
-    if found:
-        print('Chave encontrada: ', found.key, '\n\n')
-    else:
-        print('Chave nao encontrada.')
-
-    #testando
-    # tree.show(rootNode)
-    # tree.show(leftNode)
-    # tree.show(rightNode)
-    # tree.show(rightNode2)
-    # print "No: "+str(rootNode.key)
-    # print "Cor: "+str(rootNode.color.value)
-    # print "Pai: "+str(rootNode.parent)
-    # print "Filho direito: "+str(rootNode.right.key)
-    # print "Filho esquerdo: "+str(rootNode.left.key)+"\n"
-    #
-    # print "No: "+str(leftNode.key)
-    # print "Cor: "+str(leftNode.color.value)
-    # print "Pai: "+str(leftNode.parent.key)
-    # print "Filho direito: "+str(leftNode.right)
-    # print "Filho esquerdo: "+str(leftNode.left)+"\n"
-    #
-    # print "No: "+str(rightNode.key)
-    # print "Cor: "+str(rightNode.color.value)
-    # print "Pai: " +str(rightNode.parent.key)
-    # print "Filho direito: "+str(rightNode.right)
-    # print "Filho esquerdo: "+str(rightNode.left.key)+"\n"
-    #
-    # print "No: "+str(rightNode2.key)
-    # print "Cor: "+str(rightNode2.color.value)
-    # print "Pai: " +str(rightNode2.parent.key)
-    # print "Filho direito: "+str(rightNode2.right)
-    # print "Filho esquerdo: "+str(rightNode2.left)+"\n"
-main()
+# def main():
+#     #nos
+#     rootNode=RBNode(20)
+#     rightNode = RBNode(30)
+#     rightNode2 = RBNode(25)
+#     leftNode = RBNode(10)
+#     leftNode2 = RBNode(12)
+#     rightNode35 = RBNode(35)
+#     rightNode33 = RBNode(33)
+#     rightNode36 = RBNode(36)
+#     rightNode34 = RBNode(34)
+#
+#     #arvores
+#     tree = RBTree()
+#
+#     #inserir nos nas arvores
+#     tree.insertNode(rootNode)
+#     tree.insertNode(leftNode)
+#     tree.insertNode(rightNode)
+#     tree.insertNode(rightNode2)
+#     tree.insertNode(leftNode2)
+#     tree.insertNode(rightNode35)
+#     tree.insertNode(rightNode33)
+#     tree.insertNode(rightNode36)
+#     tree.insertNode(rightNode34)
+#     tree.deleteNode(rightNode36)
+#
+#     tree.show(rightNode)
+#     tree.show(rightNode2)
+#     tree.show(leftNode)
+#     tree.show(rootNode)
+#     tree.show(leftNode2)
+#     tree.show(rightNode33)
+#     tree.show(rightNode35)
+#     tree.show(rightNode36)
+#     tree.show(rightNode34)
+#
+#     #testando buscar
+#     print('')
+#     print("TESTANDO BUSCAR CHAVE NA ARVORE")
+#     found = tree.search(330)
+#     if found:
+#         print('Chave encontrada: ', found.key, '\n\n')
+#     else:
+#         print('Chave nao encontrada.')
+#
+#     #testando
+#     # tree.show(rootNode)
+#     # tree.show(leftNode)
+#     # tree.show(rightNode)
+#     # tree.show(rightNode2)
+#     # print "No: "+str(rootNode.key)
+#     # print "Cor: "+str(rootNode.color.value)
+#     # print "Pai: "+str(rootNode.parent)
+#     # print "Filho direito: "+str(rootNode.right.key)
+#     # print "Filho esquerdo: "+str(rootNode.left.key)+"\n"
+#     #
+#     # print "No: "+str(leftNode.key)
+#     # print "Cor: "+str(leftNode.color.value)
+#     # print "Pai: "+str(leftNode.parent.key)
+#     # print "Filho direito: "+str(leftNode.right)
+#     # print "Filho esquerdo: "+str(leftNode.left)+"\n"
+#     #
+#     # print "No: "+str(rightNode.key)
+#     # print "Cor: "+str(rightNode.color.value)
+#     # print "Pai: " +str(rightNode.parent.key)
+#     # print "Filho direito: "+str(rightNode.right)
+#     # print "Filho esquerdo: "+str(rightNode.left.key)+"\n"
+#     #
+#     # print "No: "+str(rightNode2.key)
+#     # print "Cor: "+str(rightNode2.color.value)
+#     # print "Pai: " +str(rightNode2.parent.key)
+#     # print "Filho direito: "+str(rightNode2.right)
+#     # print "Filho esquerdo: "+str(rightNode2.left)+"\n"
+# main()

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from user import *
 from book import *
 from loan import *
@@ -24,7 +25,18 @@ class Library (object):
         key = int(key)
         found = treeUsers.search(key)
         if found:
-            print ("Usuária(o) encontrada(o): ", found.value.name, '\n\n')
+            print ("Usuária(o) encontrada(o): ", found.value.name)
+            # print ("Chave: ", found.key)
+            if found.left is not None:
+                print ("Filho esquerdo: ", str(found.right.key))
+            else:
+                print ("Filho esquerdo: ", found.right)
+            if found.right is not None:
+                print ("Filho direito: ", str(found.left.key))
+            else:
+                print ("Filho direito: ", found.left)
+            if found.parent is not None:
+                print ("Pai: ", str(found.parent.key),'\n\n')
         else:
             print ("Usuária(o) não encontrada(o).", '\n\n')
 
@@ -65,7 +77,20 @@ class Library (object):
         key = int(key)
         found = treeBooks.search(key)
         if found:
-            print ("Livro encontrada(o): ", found.value.title, '\n\n')
+            print ("Livro encontrada(o): ", found.value.title)
+            # print ("Chave: ", found.key)
+            if found.left is not None:
+                print ("Filho esquerdo: ", str(found.right.key))
+            else:
+                print ("Filho esquerdo: ", found.right)
+            if found.right is not None:
+                print ("Filho direito: ", str(found.left.key))
+            else:
+                print ("Filho direito: ", found.left)
+            if found.parent is not None:
+                print ("Pai: ", str(found.parent.key),'\n\n')
+            else:
+                print ("Pai: ", found.parent,'\n\n')
         else:
             print ("Livro não encontrada(o).", '\n\n')
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from red_black_tree import *
 from library import *
 from user import *
