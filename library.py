@@ -1,18 +1,8 @@
 from user import *
 from book import *
+from loan import *
 
 class Library (object):
-
-    name = None
-    book = None
-    loanDate = None
-    deliveryDate = None
-
-    def __init__(self, user, book, loanDate, deliveryDate):
-        self.user = user
-        self.book = book
-        self.loanDate = loanDate
-        self.deliveryDate = deliveryDate
 
     def addUser(treeUsers):
         name = input("Digite o nome do usuária(o): ")
@@ -37,6 +27,11 @@ class Library (object):
             print ("Usuária(o) encontrada(o): ", found.value.name, '\n\n')
         else:
             print ("Usuária(o) não encontrada(o).", '\n\n')
+
+    def searchUserLoan(treeUsers, key):
+        key = int(key)
+        userLoan = treeUsers.search(key)
+        return userLoan
 
     def deleteUser(treeUsers, key=None):
         key = input("Digite a chave da(o) usuária(o) que deseja remover: ")
@@ -74,13 +69,39 @@ class Library (object):
         else:
             print ("Livro não encontrada(o).", '\n\n')
 
+    def searchBookLoan(treeBooks, key):
+        key = int(key)
+        bookLoan = treeBooks.search(key)
+        return bookLoan
+
     def deleteBook(treeBooks, key=None):
         key = input("Digite a chave do livro que deseja remover: ")
         key = int(key)
-        node = treeUsers.search(key)
+        node = treeBooks.search(key)
         treeBooks.deleteNode(node)
         found = treeBooks.search(key)
         if found:
             print ('Livro não removido:', found.value.title ,'\n\n')
         else:
             print ("Livro removido.", '\n\n')
+
+    def addLoan(treeUsers, treeBooks, listLoan):
+        keyUser = input("Digite a chave do usuário que vai realizar o empréstimo: ")
+        keyBook = input("Digite a chave do livro: ")
+        loanDate = input("Digite a data de empréstimo: ")
+        deliveryDate = input("Digite a data de entrega: ")
+        user = Library.searchUserLoan(treeUsers, keyUser).value
+        book = Library.searchBookLoan(treeBooks, keyBook).value
+        loan = Loan(user, book, loanDate, deliveryDate, 'not delivered')
+        listLoan.append(loan)
+        # Loan.showListLoan(listLoan)
+
+    def deliveredLoan(listLoan):
+        name = input("Digite o nome do usuário que vai entregar o livro: ")
+        book = input("Digite o título do livro a ser entregue: ")
+        i=0
+        for i in range(0, len(listLoan)):
+            if name == listLoan[i].user.name and book == listLoan[i].book.title:
+                listLoan[i].delivered = 'delivered'
+            else:
+                print("Empréstimo não encontrado.")

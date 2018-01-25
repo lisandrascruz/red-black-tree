@@ -2,6 +2,7 @@ from red_black_tree import *
 from library import *
 from user import *
 from book import *
+from loan import *
 
 def main():
 
@@ -9,12 +10,17 @@ def main():
     treeUsers = RBTree()
     treeBooks = RBTree()
 
+    #CRIANDO LISTA DE EMPRÉSTIMOS#
+    listLoan = []
+
     ## INTERFACE COM USUÁRIO ##
     print("Bem-vinda(o) à Biblioteca UFRPE\n")
 
     def printChoice():
         print ("Digite 1 para adicionar uma(um) usuária(o)\n 2 para buscá-la(o)\n 3 para removê-la(o)\n")
         print ("Digite 4 para adicionar um livro\n 5 para buscá-lo\n 6 para removê-lo\n")
+        print ("Digite 7 para cadastrar um empréstimo\n 8 para removê-lo\n 9 para visualizar todos os empréstimos\n")
+        print ("Digite 10 para relatório de usuários\n 11 para relatório de livros \n")
         print ("Ou digite 0 para sair.\n")
         print ("Obs: A chave dos usuários e dos livros são sequenciais.")
 
@@ -34,6 +40,16 @@ def main():
             Library.searchBook(treeBooks)
         elif choice == '6':
             Library.deleteBook(treeBooks)
+        elif choice == '7':
+            Library.addLoan(treeUsers, treeBooks, listLoan)
+        elif choice == '8':
+            Library.deliveredLoan(listLoan)
+        elif choice == '9':
+            Loan.showListLoan(listLoan)
+        # elif choice == '10':
+        #
+        # elif choice == '11':
+        #
         else:
             print ("Escolha uma opção válida.")
 
