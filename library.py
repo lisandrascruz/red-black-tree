@@ -41,7 +41,8 @@ class Library (object):
     def deleteUser(treeUsers, key=None):
         key = input("Digite a chave da(o) usuária(o) que deseja remover: ")
         key = int(key)
-        treeUsers.deleteNode(key)
+        node = treeUsers.search(key)
+        treeUsers.deleteNode(node)
         found = treeUsers.search(key)
         if found:
             print ('Usuária(o) não removida(o):', found.value.name ,'\n\n')
@@ -76,7 +77,8 @@ class Library (object):
     def deleteBook(treeBooks, key=None):
         key = input("Digite a chave do livro que deseja remover: ")
         key = int(key)
-        treeBooks.deleteNode(key)
+        node = treeUsers.search(key)
+        treeBooks.deleteNode(node)
         found = treeBooks.search(key)
         if found:
             print ('Livro não removido:', found.value.title ,'\n\n')
