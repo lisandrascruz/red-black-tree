@@ -46,10 +46,10 @@ def main():
             Library.deliveredLoan(listLoan)
         elif choice == '9':
             Loan.showListLoan(listLoan)
-        # elif choice == '10':
-        #
-        # elif choice == '11':
-        #
+        elif choice == '10':
+            Library.userReport(listLoan)
+        elif choice == '11':
+            Library.bookReport(listLoan)
         else:
             print ("Escolha uma opção válida.")
 

@@ -8,8 +8,3 @@ class Book (object):
         self.author = author
         self.edition = edition
         self.available = available
-
-    # 
-    # def setAvailable(self, available):
-    #     self.available = available
-    #     available = false

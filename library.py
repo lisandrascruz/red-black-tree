@@ -105,3 +105,23 @@ class Library (object):
                 listLoan[i].delivered = 'delivered'
             else:
                 print("Empréstimo não encontrado.")
+
+    def userReport(listLoan):
+        name = input("Digite o nome do usuário para a geração de seu relatório: ")
+        i=0
+        for i in range(0, len(listLoan)):
+            if name == listLoan[i].user.name:
+                loan = listLoan[i]
+                print (loan.user.name, " pegou emprestado o livro ", loan.book.title, " em ", loan.loanDate, " para entregar em ", loan.deliveryDate, '. Status: ', loan.delivered, '\n')
+            else:
+                print("Não encontrado nenhum empréstimo desse usuário.")
+
+    def bookReport(listLoan):
+        titulo = input("Digite o título do livro para a geração do relatório: ")
+        i=0
+        for i in range(0, len(listLoan)):
+            if titulo == listLoan[i].book.title:
+                loan = listLoan[i]
+                print (loan.user.name, " pegou emprestado o livro ", loan.book.title, " em ", loan.loanDate, " para entregar em ", loan.deliveryDate, '. Status: ', loan.delivered, '\n')
+            else:
+                print("Este livro não está emprestado.")
