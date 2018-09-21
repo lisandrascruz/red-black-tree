@@ -1,2 +1,39 @@
 Para utilizar a biblioteca, o usuário deverá executar o arquivo main.py.
 To use the library, the user must run the main.py file.
+
+Definição:
+Em uma biblioteca há um conjunto de livros que podem ser emprestados para os usuários devidamente cadastrados. Para um livro ser emprestado ele deve estar disponível (presente na biblioteca e sem reserva) e o usuário deve estar em dia com a biblioteca e não ter excedido o número máximo de empréstimos. Assim, será possível a adicionar e remover livros, cadastrar e remover usuários e consultar informações cadastradas de ambos. Além disso, a geração de relatórios capazes de informar que livros estão associados a um determinado usuário e que usuário está associados a determinado livro, no momento da busca.
+
+Implementação: 
+O projeto descrito e proposto acima foi implementado em Python 3.6.3 fazendo uso dos conceitos de árvores vermelho-preto. Segundo Cormen (2002, p.220) “uma árvore vermelho-preto é uma árvore de pesquisa binária com um bit extra de armazenamento por nó: sua cor.” As árvores de pesquisa binária, como o próprio nome sugere, são árvores que tem como intuito facilitar a busca de dados, representados em seus nós. Além da busca, pode-se realizar outras operações, tais como: mínimo, máximo, sucessor, predecessor, inserção e remoção. A fim de otimizar o processo de busca nas árvores binárias, as árvores vermelho-preto carregam em seus nós uma cor (vermelha ou preta). 
+Nas árvores vermelho-preto, 5 regras devem ser seguidas, quando se trata da definição da cor de cada nó. As regras são:
+(I) Todo nó é vermelho ou preto.
+(II) A raiz da árvore é preta.
+(III) Toda folha Null é preta.
+(IV) Se um nó é vermelho, então ambos os seus filhos são pretos.
+(V) Para cada nó, todos os caminhos desde o nó até as folhas descendentes contêm o mesmo número de nós pretos.
+
+Seguindo todas as regras acima, neste projeto, a árvore vermelho-preto encontra-se no arquivo red_black_tree.py e contêm duas classes, uma classe representa o nó da árvore e a outra representa a árvore que será composta pelos nós.  
+A classe RBNode é a classe do nó, nela teremos os seguintes atributos em seu construtor: 
+- key: é a chave do nó.
+- color: a cor do nó, sendo ela vermelha ou preta.
+- value: a informação que desejamos armazenar, no nosso caso o objeto de book ou user.
+- left: a referência para o filho direito do nó.
+- right: a referência para o filho esquerdo do nó.
+- parent: a referência para o pai do nó. 
+
+A classe RBTree é a classe da árvore, nela teremos apenas a referência do nó raiz, definido como root em seu construtor. Ainda dentro da RBTree temos métodos, os quais, permitem a execução de operações na árvore. Os métodos desta classe são:
+- leftRotate e rightRotate: levando em conta que ao inserir ou remover elementos de uma RBTree sua estrutura é alterada, podendo vir a ferir as regras mencionadas e tornar-se desbalanceada, os métodos de rotação são responsáveis por reestruturar os ponteiros. Para reestruturar a árvore, deve-se fazer rotações, para a esquerda ou direita.
+- insertNode: este método é responsável por inserir um novo nó na árvore verificando a posição em que o novo nó será inserido, caso seja maior que a raiz será alocado a direita da raiz, caso seja menor será alocado a esquerda da raiz, caso não haja a raiz o novo nó será a raiz. Também é definido no momento da inserção os filhos e o pai do novo nó, por padrão a cor adicionada é a cor vermelha. Visto que, se todos os nós adicionados foram vermelhos, a árvore estará quebrando suas regras, então este método precisa do método insertFixupNode para redefinir as cores dos nós.
+- transplant: responsável por substituir uma subárvore como filho de seu pai por uma outra subárvore.
+- treeMinimun: retorna o objeto com a menor chave da árvore.
+- insertFixupNode e deleteFixupNode: estes métodos tem por objetivo balancear a árvore com o auxílio dos métodos de leftRotate e rightRotate. Levando em consideração as regras para uma árvore ser vermelho-preta,  este método trabalha de forma corretiva à inserção/remoção dos nós. A cada nó inserido/removido, com a cor vermelha definida de forma prévia no caso da inserção, o insertFixup verifica seus ancestrais para redefinir suas cores e se necessário rotacionar os nos.
+- deleteNode: responsável por remover um nó de uma árvore, este método verifica 3 casos: (1) se o nodo a ser inserido tem filhos (2) se o nodo a ser inserido tem apenas um filho (3) se o nodo a ser removido tem dois filhos. Para cada caso o método comporta-se de forma diferente. Deve-se então (1) apenas excluir o nó (2) extrair o nó e manter a ligação entre avô e neto (3) extrair o sucessor que tenha no máximo um filho e colocá-lo no lugar do node.
+- search: varre a árvore em busca de um elemento. Após verificar o nó raiz, a busca define para que lado deve continuar a busca.
+- show: para mostrar experimentos feitos com a árvore.
+
+Os arquivos que fazem uso da árvore vermelho-preta contém as seguintes classes:
+- user: esta é a classe dos usuários, onde podemos encontrar seu nome, CPF e telefone.
+- books: esta é a classe dos livros, onde podemos encontrar seu título, quantidade, autor, edição e se ele encontra-se disponível ou não para empréstimo.
+- library: a classe que representa a biblioteca, nela estão presentes os usuários e livros cadastrados, data de retirada e data de devolução. Esta classe cria e implementa objetos e métodos da classe red_black_tree.
+- red_black_tree: nesta classe está implementada a árvore vemelho-preto utilizada no projeto, juntamente com seus métodos. 
